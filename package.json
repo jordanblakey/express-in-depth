@@ -1,0 +1,23 @@
+{
+  "name": "express-in-depth",
+  "version": "1.0.0",
+  "description": "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordanblakey/express-in-depth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordanblakey/express-in-depth/issues"
+  },
+  "homepage": "https://github.com/jordanblakey/express-in-depth#readme",
+  "dependencies": {
+    "express": "^4.16.1",
+    "express-handlebars": "^3.0.0"
+  }
+}
