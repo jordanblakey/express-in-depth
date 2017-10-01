@@ -72,6 +72,75 @@ app.post('/file-upload/:year/:month', function (req, res) {
   });
 });
 
+
+// Experimenting with cookies
+app.get('/cookie', function (req, res) {
+  res.cookie('username', 'Jordan Blakey', {
+    expire: new Date() + 9999
+  }).send('username has the value of Jordan Blakey');
+});
+
+app.get('/listcookies', function (req, res) {
+  console.log("Cookies: ", req.cookies);
+  res.send('Look in the console for cookies');
+});
+
+app.get('/deletecookie', function (req, res) {
+  res.clearCookie('username');
+  res.send('username Cookie Deleted');
+});
+
+
+// Experimenting with sessions - Counting views
+var session = require('express-session');
+var parseurl = require('parseurl');
+
+app.use(session({
+  resave: false,
+  saveUninitialized: true,
+  secret: credentials.cookieSecret,
+}));
+
+app.use(function (req, res, next) {
+  var views = req.session.views;
+  if (!views) {
+    views = req.session.views = {};
+  }
+  var pathname = parseurl(req).pathname;
+  views[pathname] = (views[pathname] || 0) + 1;
+  next();
+});
+
+app.get('/viewcount', function (req, res, next) {
+  res.send('You viewed this page ' + req.session.views['/viewcount'] + ' times');
+});
+
+// Reading files
+var fs = require('fs');
+app.get('/readfile', function (req, res, next) {
+  fs.readFile('./public/readFile.txt', function (err, data) {
+    if (err) {
+      return console.error(err);
+    }
+    res.send('The File: ' + data.toString());
+  });
+});
+
+app.get('/writefile', function (req, res, next) {
+  fs.writeFile('./public/writeFile.txt', 'This is some text written by the npm fs (File System) package, called by an Express route.', function (err) {
+    if (err) {
+      return console.error(err);
+    }
+  });
+
+  fs.readFile('./public/writeFile.txt', function (err, data) {
+    if (err) {
+      return console.error(err);
+    }
+    res.send('The File: ' + data.toString());
+  });
+});
+
 // Express error handling middleware definition
 app.use(function (req, res, next) { //
   console.log('Looking for URL: ' + req.url);
@@ -88,7 +157,7 @@ app.use(function (req, res) {
 });
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.statut(500);
+  res.status(500);
   res.render('500')
 });
 
