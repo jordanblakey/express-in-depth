@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/jordanblakey/express-in-depth#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
     "express": "^4.16.1",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "formidable": "^1.1.1"
   }
 }
