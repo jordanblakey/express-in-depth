@@ -15,9 +15,10 @@ app.use(require('body-parser').urlencoded({
   extended: true
 }));
 
-var formidabale = require('formidable');
+var formidable = require('formidable');
 var credentials = require('./credentials.js');
 app.use(require('cookie-parser')(credentials.cookieSecret))
+
 
 // Express configuration
 app.set('port', process.env.PORT || 3000); // Set Port
@@ -51,6 +52,25 @@ app.post('/process', function (req, res) {
   res.redirect(303, '/thankyou');
 })
 
+app.get('/file-upload', function (req, res) {
+  var now = new Date();
+  res.render('file-upload', {
+    year: now.getFullYear(),
+    month: now.getMonth()
+  });
+});
+
+app.post('/file-upload/:year/:month', function (req, res) {
+  var form = new formidable.IncomingForm();
+  form.parse(req, function (err, fields, file) {
+    if (err) {
+      return res.redirect(303, '/form-error');
+    }
+    console.log('Recieved File.');
+    console.log(file);
+    res.redirect(303, '/thankyou');
+  });
+});
 
 // Express error handling middleware definition
 app.use(function (req, res, next) { //
